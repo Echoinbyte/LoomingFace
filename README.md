@@ -1,5 +1,7 @@
 # NepLoom Faces
 
+![](https://i.postimg.cc/xjt87BTg/Screenshot-2025-06-28-180324.png)
+
 A beautiful and intuitive avatar builder that allows users to create unique face portraits by combining different facial features. Part of the NepLoom ecosystem.
 
 ## Features
