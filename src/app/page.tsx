@@ -1,103 +1,188 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import FaceCanvas from "@/components/FaceCanvas";
+import Sidebar from "@/components/Sidebar";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
+import {
+  FaceSelection,
+  defaultFaceSelection,
+  faceCategories,
+  generateRandomCombination,
+} from "@/data/faceData";
+import { useSearchParams, useRouter } from "next/navigation";
+
+const AvatarBuilder = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [nestedSidebarOpen, setNestedSidebarOpen] = useState(false);
+
+  // Initialize face selection from URL params or random great combination
+  const initializeFaceSelection = useCallback(() => {
+    const urlSelection: FaceSelection = {};
+    let hasUrlParams = false;
+
+    // Check if there are face selection parameters in URL
+    faceCategories.forEach((category) => {
+      const paramValue = searchParams.get(category.id);
+      if (paramValue !== null) {
+        hasUrlParams = true;
+        urlSelection[category.id] = paramValue === "null" ? null : paramValue;
+      }
+    });
+
+    if (hasUrlParams) {
+      return urlSelection;
+    } else {
+      // No URL params, use a random great combination
+      return generateRandomCombination();
+    }
+  }, [searchParams]);
+
+  const [faceSelection, setFaceSelection] =
+    useState<FaceSelection>(defaultFaceSelection);
+
+  // Update URL when face selection changes
+  const updateURL = useCallback(
+    (selection: FaceSelection) => {
+      const params = new URLSearchParams();
+      Object.entries(selection).forEach(([key, value]) => {
+        if (value !== null) {
+          params.set(key, value);
+        }
+      });
+      const newUrl = params.toString()
+        ? `?${params.toString()}`
+        : window.location.pathname;
+      router.replace(newUrl);
+    },
+    [router]
+  );
+
+  // Initialize on mount
+  useEffect(() => {
+    const initialSelection = initializeFaceSelection();
+    setFaceSelection(initialSelection);
+    updateURL(initialSelection);
+  }, [initializeFaceSelection, updateURL]);
+
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+    setNestedSidebarOpen(true);
+  };
+
+  const handleNestedSidebarClose = () => {
+    setNestedSidebarOpen(false);
+    setSelectedCategory("");
+  };
+
+  const handleFaceOptionSelect = (
+    categoryId: string,
+    optionId: string | null
+  ) => {
+    const newSelection = {
+      ...faceSelection,
+      [categoryId]: optionId,
+    };
+    setFaceSelection(newSelection);
+    updateURL(newSelection);
+  };
+
+  const handleRandomize = () => {
+    const randomCombination = generateRandomCombination();
+    setFaceSelection(randomCombination);
+    updateURL(randomCombination);
+  };
+
+  const handleCategoryRandomize = (categoryId: string) => {
+    const category = faceCategories.find((cat) => cat.id === categoryId);
+    if (!category) return;
+
+    const availableOptions = category.options.filter(
+      (opt) => opt.id !== "none"
+    );
+    if (availableOptions.length === 0) return;
+
+    const randomOption =
+      availableOptions[Math.floor(Math.random() * availableOptions.length)];
+    const newSelection = {
+      ...faceSelection,
+      [categoryId]: randomOption.id,
+    };
+    setFaceSelection(newSelection);
+    updateURL(newSelection);
+  };
+
+  const handleClearAll = () => {
+    const clearedSelection = Object.keys(faceSelection).reduce((acc, key) => {
+      acc[key] = key === "skin" ? "1" : null; // Keep default skin tone
+      return acc;
+    }, {} as FaceSelection);
+
+    setFaceSelection(clearedSelection);
+    updateURL(clearedSelection);
+    handleNestedSidebarClose();
+  };
+
+  const handleNewPortrait = () => {
+    // Open the first category (skin-tone) in the nested sidebar
+    const firstCategory = faceCategories[0]; // skin-tone should be first
+    if (firstCategory) {
+      handleCategorySelect(firstCategory.id);
+    }
+  };
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
+    <div className="h-screen bg-gray-50 flex relative overflow-hidden">
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
         />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+      )}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <Sidebar
+        selectedCategory={selectedCategory}
+        onCategorySelect={handleCategorySelect}
+        isOpen={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        nestedSidebarOpen={nestedSidebarOpen}
+        onNestedSidebarClose={handleNestedSidebarClose}
+        faceSelection={faceSelection}
+        onFaceOptionSelect={handleFaceOptionSelect}
+        onCategoryRandomize={handleCategoryRandomize}
+      />
+      <FaceCanvas
+        selectedCategory={selectedCategory}
+        onMenuToggle={() => setSidebarOpen(true)}
+        nestedSidebarOpen={nestedSidebarOpen}
+        onNestedSidebarClose={handleNestedSidebarClose}
+        faceSelection={faceSelection}
+        onFaceOptionSelect={handleFaceOptionSelect}
+        onRandomize={handleRandomize}
+        onCategoryRandomize={handleCategoryRandomize}
+        onClearAll={handleClearAll}
+        onNewPortrait={handleNewPortrait}
+      />
     </div>
   );
-}
+};
+
+const Index = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-screen bg-gray-50 flex items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
+      <AvatarBuilder />
+    </Suspense>
+  );
+};
+
+export default Index;
