@@ -45,14 +45,14 @@ const FaceCanvas: React.FC<FaceCanvasProps> = ({
           <div className="flex items-center gap-2">
             <button
               onClick={() => onCategoryRandomize(category.id)}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
               title="Randomize this category"
             >
               <Shuffle size={20} className="text-gray-600" />
             </button>
             <button
               onClick={onNestedSidebarClose}
-              className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
             >
               <X size={20} className="text-gray-600" />
             </button>
@@ -68,7 +68,7 @@ const FaceCanvas: React.FC<FaceCanvasProps> = ({
                   option.id === "none" ? null : option.id
                 )
               }
-              className={`aspect-square rounded-lg transition-colors flex items-center justify-center relative overflow-hidden m-1 ${
+              className={`aspect-square rounded-lg cursor-pointer transition-colors flex items-center justify-center relative overflow-hidden m-1 ${
                 faceSelection[category.id] === option.id ||
                 (faceSelection[category.id] === null && option.id === "none")
                   ? "ring-2 ring-red-500 bg-red-50"
@@ -166,21 +166,21 @@ const FaceCanvas: React.FC<FaceCanvasProps> = ({
       <div className="lg:hidden p-4 flex justify-between items-center bg-white border-b border-gray-200 flex-shrink-0">
         <button
           onClick={onMenuToggle}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
         >
           <Menu size={24} className="text-gray-600" />
         </button>
         <div className="flex items-center gap-2">
           <button
             onClick={onClearAll}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
             title="Clear all"
           >
             <RotateCcw size={20} className="text-gray-600" />
           </button>
           <button
             onClick={() => setSaveDialogOpen(true)}
-            className="px-3 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors text-sm"
+            className="px-3 py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 cursor-pointer transition-colors text-sm"
           >
             Save →
           </button>
@@ -191,7 +191,7 @@ const FaceCanvas: React.FC<FaceCanvasProps> = ({
       <div className="hidden lg:flex px-4 lg:px-6 py-4 justify-end items-center flex-shrink-0">
         <button
           onClick={() => setSaveDialogOpen(true)}
-          className="px-3 py-2 lg:px-4 lg:py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 transition-colors text-sm lg:text-base"
+          className="px-3 py-2 lg:px-4 lg:py-2 bg-red-500 text-white rounded-lg font-medium hover:bg-red-600 cursor-pointer transition-colors text-sm lg:text-base"
         >
           Save →
         </button>
@@ -208,21 +208,21 @@ const FaceCanvas: React.FC<FaceCanvasProps> = ({
             <div className="flex justify-center gap-3 lg:gap-4">
               <button
                 onClick={onRandomize}
-                className="p-2 lg:p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                className="p-2 lg:p-3 bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer transition-colors"
                 title="Randomize face"
               >
                 <Shuffle size={18} className="text-gray-600 lg:w-5 lg:h-5" />
               </button>
               <button
                 onClick={onClearAll}
-                className="p-2 lg:p-3 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+                className="p-2 lg:p-3 bg-gray-100 rounded-full hover:bg-gray-200 cursor-pointer transition-colors"
                 title="Clear all"
               >
                 <RotateCcw size={18} className="text-gray-600 lg:w-5 lg:h-5" />
               </button>
               <button
                 onClick={onNewPortrait}
-                className="px-4 py-2 lg:px-6 lg:py-3 bg-red-500 text-white rounded-full font-medium hover:bg-red-600 transition-colors flex items-center gap-2 text-sm lg:text-base"
+                className="px-4 py-2 lg:px-6 lg:py-3 bg-red-500 text-white rounded-full font-medium hover:bg-red-600 cursor-pointer transition-colors flex items-center gap-2 text-sm lg:text-base"
               >
                 <Plus size={18} className="lg:w-5 lg:h-5" />
                 <span className="hidden sm:inline">New Portrait</span>

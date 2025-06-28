@@ -121,7 +121,7 @@ const SaveDialog: React.FC<SaveDialogProps> = ({
           <h2 className="text-xl font-semibold text-gray-900">Save Portrait</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
           >
             <X size={20} className="text-gray-600" />
           </button>
@@ -207,7 +207,7 @@ const SaveDialog: React.FC<SaveDialogProps> = ({
               <button
                 key={color.value}
                 onClick={() => handleColorSelect(color.value)}
-                className={`aspect-square rounded-lg border-2 transition-all ${
+                className={`aspect-square rounded-lg border-2 cursor-pointer transition-all ${
                   selectedColor === color.value && !showCustomColor
                     ? "border-red-500 ring-2 ring-red-200"
                     : "border-gray-200 hover:border-gray-300"
@@ -222,7 +222,7 @@ const SaveDialog: React.FC<SaveDialogProps> = ({
           <div className="space-y-3">
             <button
               onClick={handleCustomColorClick}
-              className={`w-full p-3 border-2 rounded-lg transition-all flex items-center gap-3 ${
+              className={`w-full p-3 border-2 rounded-lg cursor-pointer transition-all flex items-center gap-3 ${
                 showCustomColor
                   ? "border-red-500 bg-red-50"
                   : "border-gray-200 hover:border-gray-300"
@@ -263,7 +263,7 @@ const SaveDialog: React.FC<SaveDialogProps> = ({
               <h4 className="font-medium text-gray-900">Use for NepLoom</h4>
               <button
                 onClick={handleCopyNepLoomString}
-                className="flex items-center gap-2 px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md text-sm transition-colors"
+                className="flex items-center gap-2 px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded-md text-sm cursor-pointer transition-colors"
               >
                 {copied ? (
                   <>
@@ -290,7 +290,7 @@ const SaveDialog: React.FC<SaveDialogProps> = ({
 
           <button
             onClick={handleDownloadWithBackground}
-            className="w-full flex items-center gap-3 p-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+            className="w-full flex items-center gap-3 p-4 bg-red-500 text-white rounded-lg hover:bg-red-600 cursor-pointer transition-colors"
           >
             <Download size={20} />
             <div className="text-left">
@@ -303,7 +303,7 @@ const SaveDialog: React.FC<SaveDialogProps> = ({
 
           <button
             onClick={handleDownloadTransparent}
-            className="w-full flex items-center gap-3 p-4 border-2 border-gray-200 text-gray-900 rounded-lg hover:bg-gray-50 transition-colors"
+            className="w-full flex items-center gap-3 p-4 border-2 border-gray-200 text-gray-900 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
           >
             <Download size={20} />
             <div className="text-left">

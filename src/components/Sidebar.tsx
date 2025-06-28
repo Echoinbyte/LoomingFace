@@ -1,8 +1,9 @@
 import React from "react";
-import { Shuffle, X, ArrowLeft } from "lucide-react";
+import { Shuffle, X, ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import NepLoomLogo from "../../public/NepLoom.svg";
 import { faceCategories, FaceSelection } from "../data/faceData";
+import Link from "next/link";
 
 interface SidebarProps {
   selectedCategory: string;
@@ -40,7 +41,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={onNestedSidebarClose}
-              className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+              className="p-1 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
             >
               <ArrowLeft size={16} className="text-gray-600" />
             </button>
@@ -50,7 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <button
             onClick={() => onCategoryRandomize(category.id)}
-            className="p-1 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-1 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
             title="Randomize this category"
           >
             <Shuffle size={16} className="text-gray-600" />
@@ -69,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     option.id === "none" ? null : option.id
                   )
                 }
-                className={`aspect-square rounded-lg transition-colors flex items-center justify-center relative overflow-hidden ${
+                className={`aspect-square rounded-lg cursor-pointer transition-colors flex items-center justify-center relative overflow-hidden ${
                   faceSelection[category.id] === option.id ||
                   (faceSelection[category.id] === null && option.id === "none")
                     ? "ring-2 ring-red-500 bg-red-50"
@@ -133,7 +134,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                   <button
                     key={category.id}
                     onClick={() => onCategorySelect(category.id)}
-                    className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-colors ${
+                    className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left cursor-pointer transition-colors ${
                       selectedCategory === category.id
                         ? "bg-red-50 text-red-600"
                         : "text-gray-700 hover:bg-gray-50"
@@ -149,10 +150,13 @@ const Sidebar: React.FC<SidebarProps> = ({
 
           {/* Bottom Actions */}
           <div className="p-4 border-t border-gray-100 space-y-2">
-            <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-              <Shuffle size={20} />
+            <Link
+              href={"https://neploom.tech"}
+              className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-50 cursor-pointer transition-colors"
+            >
               <span className="font-medium">Use NepLoom</span>
-            </button>
+              <ArrowRight size={20} />
+            </Link>
           </div>
         </div>
 
@@ -162,7 +166,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Mobile Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform transition-transform duration-300 ease-in-out lg:hidden ${
+        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform cursor-pointer transition-transform duration-300 ease-in-out lg:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -182,7 +186,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <button
             onClick={onToggle}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors"
           >
             <X size={20} className="text-gray-600" />
           </button>
@@ -199,7 +203,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                     onCategorySelect(category.id);
                     onToggle();
                   }}
-                  className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left transition-colors ${
+                  className={`w-full flex items-center gap-3 px-3 py-3 rounded-lg text-left cursor-pointer transition-colors ${
                     selectedCategory === category.id
                       ? "bg-red-50 text-red-600"
                       : "text-gray-700 hover:bg-gray-50"
@@ -214,10 +218,13 @@ const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         <div className="p-4 border-t border-gray-100 space-y-2">
-          <button className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-            <Shuffle size={20} />
+          <Link
+            href={"https://neploom.tech"}
+            className="w-full flex items-center gap-3 px-3 py-3 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+          >
             <span className="font-medium">Use NepLoom</span>
-          </button>
+            <ArrowRight size={20} />
+          </Link>
         </div>
       </div>
     </>
