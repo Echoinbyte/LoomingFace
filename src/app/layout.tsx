@@ -151,6 +151,7 @@ export default function RootLayout({
           name="msapplication-TileImage"
           content="/icons/ms-icon-144x144.png"
         />
+        <meta name="google-site-verification" content="T3CqtZdcGpumyjQ1eHRbchPo1HJhS2Oz63oA2c7XDRk" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
       </head>
